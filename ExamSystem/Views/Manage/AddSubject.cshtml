@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "添加学科";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<form class="es-form" id="newsubject" action="/Manage/NewSubject">
+    <div class="row">
+        <div class="col-md-2">学科名称</div>
+        <dic class="col-md-10">
+            <input class="form-control" id="name" name="name" type="text" />
+        </dic>
+    </div>
+    <div class="row">
+        <input class="btn btn-primary btn-lg" type="submit" value="提交" />
+    </div>
+</form>
+<script>
+    $("#newsubject").submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/Manage/NewSubject",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    alert("添加成功");
+                    $('#name').val("")
+                } else {
+                    alert("添加失败");
+                }
+            }
+        });
+        event.preventDefault();
+    });
+</script>

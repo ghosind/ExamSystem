@@ -1,0 +1,24 @@
+﻿@{ 
+    List<News> news = NewsView.GetAllNews().Take(5).ToList();
+}
+<ul class="list-group es-news-list">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-11">新闻</div>
+            <div class="col-md-1 es-list-更多">
+                <a href="/News">更多</a>
+            </div>
+        </div>
+    </li>
+    @foreach (var n in news)
+    {
+        <li class="list-group-item">
+            <div class="list-group-item-heading">
+                <a href="/News/Detail/@n.nid">@n.title</a>
+            </div>
+            <div class="list-group-item-text">
+                @n.content.Substring(0, (n.content.Length < 50 ? n.content.Length : 50))
+            </div>
+        </li>
+    }
+</ul>

@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "发布新闻";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_manage_sidebar")    
+}
+<form class="es-form" action="/News/Post" method="POST" onsubmit="javascript: $('#title').val(text_validate($('#title').val())); $('#content').val(text_validate($('#content').val()));">
+    <div class="row">
+        <div class="col-md-2">
+            <label for="title">标题</label>
+        </div>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="title" name="title" maxlength="256" required />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="content">内容</label>
+        </div>
+        <div class="col-md-10">
+            <textarea class="form-control" id="content" name="content" rows="15" required></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-sm btn-primary" type="submit">发布</button>
+            <button class="btn btn-sm btn-primary" type="reset">清空</button>
+        </div>
+    </div>
+</form>

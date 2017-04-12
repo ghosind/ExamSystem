@@ -1,0 +1,84 @@
+﻿@{
+    User receiver = ViewBag.receiver;
+    ViewBag.Title = "新消息";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<form class="es-form" id="message" action="/Message/Send" method="POST" onsubmit="javascript: $('#title').val(text_validate($('#title').val())); $('#content').val(text_validate($('#content').val()));">
+    <div class="row">
+        <div class="col-md-2">
+            <label for="username">收件人</label>
+        </div>
+        @if (receiver == null)
+        {
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="username" name="username" required />
+            </div>
+            <div class="col-md-6">
+                请填写收件人用户名
+            </div>
+        }
+        else
+        {
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="username" name="username" value="@receiver.username" />
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="title">标题</label>
+        </div>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="title" name="title" maxlength="256" required />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="content">内容</label>
+        </div>
+        <div class="col-md-10">
+            <textarea class="form-control" id="content" name="content" rows="15" required></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-sm btn-primary" type="submit">发送</button>
+        </div>
+    </div>
+</form>
+<div class="modal fade message-send" role="dialog" tabindex="-1" aria-labelledby="消息发送" style="display: none;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="sent-message"></h4>
+            </div>
+            <div class="modal-body">
+                <a type="button" href="/Message/Index" class="btn btn-primary">返回收件箱</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#message').submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/Message/Send",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    $('#sent-message').text("发送成功");
+                } else {
+                    $('#sent-message').text("发送失败");
+                }
+                $('.message-send').modal();
+            }
+        });
+        event.preventDefault();
+    });
+</script>

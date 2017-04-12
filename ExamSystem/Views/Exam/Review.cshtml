@@ -1,0 +1,68 @@
+﻿@{
+    Result result = ViewBag.result;
+    Exam exam = ViewBag.exam;
+    string questions = ViewBag.questions;
+    string answers = ViewBag.answers;
+    string results = ViewBag.results;
+    int uid = ViewBag.uid;
+    ViewBag.Title = "阅卷";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section head {
+    <script type="text/javascript" src="~/Scripts/review.js"></script>
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")
+}
+<div class="es-form">
+    <div class="row">
+        <div class="col-md-2">考试名称</div>
+        <div class="col-md-10">@exam.title</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">考试科目</div>
+        <div class="col-md-4">@exam.Subject1.subject_name</div>
+        <div class="col-md-2">考生</div>
+        <div class="col-md-4">@UserView.GetUserById((int) result.uid).name</div>
+    </div>
+    <hr />
+</div>
+<script>
+    $(document).ready(function () {
+        var questions = "@questions";
+        var answers = "@answers";
+        var results = "@results";
+
+        load_questions(questions);
+        load_results(results);
+        load_answers(answers);
+    })
+
+
+    function submit_review() {
+        var score = 0;
+
+        $('.question').each(function () {
+            var s = new Number($(this).find(".sc").val());
+            if ($(this).find(".qid").text() !== '0') {
+                var ts = new Number($(this).find(".score").text());
+                submit_difficulty($(this).find(".qid").text(), s / ts);
+            }
+            score += s;
+        })
+
+        $.ajax({
+            type: "Post",
+            url: "/Exam/SubmitReview",
+            data: "eid=@exam.eid&uid=@uid&score=" + score,
+            success: function (data) {
+                if (data === true) {
+                    alert("提交成功");
+                    location.href = "/Exam/Detail/@exam.eid";
+                } else {
+                    alert("提交失败");
+                }
+            }
+        });
+    }
+</script>

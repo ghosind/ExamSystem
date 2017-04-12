@@ -1,0 +1,54 @@
+﻿@{
+    List<User> users = ViewBag.users;
+    int page = ViewBag.page;
+    int pageNumber = ViewBag.pageNumber;
+    string[] ranks = { "已禁用", "普通用户", "教师", "管理员" };
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-2">UID</div>
+            <div class="col-md-4">用户名</div>
+            <div class="col-md-4">昵称</div>
+            <div class="col-md-2">权限</div>
+        </div>
+    </li>
+    @foreach (var u in users)
+    {
+        <li class="list-group-item">
+            <a href="/User/Profile/@u.uid">
+                <div class="row">
+                    <div class="col-md-2">@u.uid</div>
+                    <div class="col-md-4">@u.username</div>
+                    <div class="col-md-4">@u.name</div>
+                    <div class="col-md-2">@ranks[u.rank]</div>
+                </div>
+            </a>
+        </li>
+    }
+</ul>
+<br />
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/Manage/Users/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < pageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/Manage/Users/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>

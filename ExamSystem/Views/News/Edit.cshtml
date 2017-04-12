@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.title = "新闻编辑";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    News news = ViewBag.news;
+}
+@section sidebar {
+    @Html.Partial("_manage_sidebar")
+}
+<form class="es-form" action="/News/Save/@news.nid" method="POST">
+    <div class="row">
+        <div class="col-md-2">
+            <label for="title">标题</label>
+        </div>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="title" name="title" maxlength="256" value="@news.title" required />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="content">内容</label>
+        </div>
+        <div class="col-md-10">
+            <textarea class="form-control" id="content" name="content" rows="15" required>@news.content</textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-sm btn-primary" type="submit">保存</button>
+            <button class="btn btn-sm btn-primary" type="reset">清空</button>
+        </div>
+    </div>
+</form>

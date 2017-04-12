@@ -1,0 +1,78 @@
+﻿@{
+    Exam exam = ViewBag.exam;
+    List<ExamsGroup> groups = ViewBag.groups;
+    ViewBag.Title = exam.title + " - 考试详细";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")
+}
+<div class="es-profile">
+    <div class="row">
+        <div class="col-md-2">考试名称</div>
+        <div class="col-md-10">@exam.title</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">考试科目</div>
+        <div class="col-md-10">
+            @SubjectView.GetSubjectById((int)exam.subject).subject_name
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">开始时间</div>
+        <div class="col-md-4">@exam.start_date.ToLongDateString()</div>
+        <div class="col-md-2">截止时间</div>
+        <div class="col-md-4">@exam.end_date.ToLongDateString()</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">考试时长</div>
+        <div class="col-md-4">@exam.time 分钟</div>
+        <div class="col-md-2">必须参加</div>
+        <div class="col-md-4">@(exam.must_take ? "是" : "否")</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">考试状态</div>
+        <div class="col-md-4">
+            @{
+                DateTime now = DateTime.Now;
+                bool testing = false;
+                if (now < exam.start_date)
+                {
+                    <span>未开始</span>
+                }
+                else if (now > exam.end_date)
+                {
+                    <span>已结束</span>
+                }
+                else
+                {
+                    <span>正在进行</span>
+                    testing = true;
+                }
+            }
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            @if (testing)
+            {
+                <a class="btn btn-sm btn-primary es-exam-list-enter" href="/Exam/Attend/@exam.eid">进入考试</a>
+            }
+            else
+            {
+                <a class="btn btn-sm btn-primary es-exam-list-enter disabled">进入考试</a>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">参与群组</div>
+        <div class="col-md-10">
+            @foreach (var group in groups)
+            {
+                if (group.gid != 0)
+                {
+                    <span style="margin-right: 10px;">@GroupView.GetGroupById(group.gid).group_name</span>
+                }
+            }
+        </div>
+    </div>
+</div>

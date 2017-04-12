@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "发件箱";
+    List<Message> messages = ViewBag.messages;
+    int page = ViewBag.page;
+    int totalPageNumber = ViewBag.pageNumber;
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<ul class="list-group es-news-list">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-2">
+                收件人
+            </div>
+            <div class="col-md-10">
+                消息标题
+            </div>
+        </div>
+    </li>
+    @foreach (var message in messages)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2">
+                    <a href="/User/Profile/@message.receiver">@UserView.GetUserById((int)message.receiver).name</a>
+                </div>
+                <div class="col-md-10">
+                    <a href="/Message/Detail/@message.mid">@message.title</a>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+<br />
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/News/Index/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < totalPageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/News/Index/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>

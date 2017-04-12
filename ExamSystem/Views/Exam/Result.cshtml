@@ -1,0 +1,34 @@
+﻿@{
+    List<Result> results = ViewBag.results;
+    ViewBag.Title = "成绩列表";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")
+}
+<ul class="list-group es-news-list">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-6">考试名称</div>
+            <div class="col-md-4">用户名</div>
+            <div class="col-md-2">分数</div>
+        </div>
+    </li>
+    @foreach (var result in results)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-6">@ExamView.GetExamById((int)result.eid).title</div>
+                <div class="col-md-4">@UserView.GetUserById((int) result.uid).name</div>
+                @if (result.score == -1)
+                {
+                    <div class="col-md-2">未阅卷</div>
+                }
+                else
+                {
+                    <div class="col-md-2">@result.score</div>
+                }
+            </div>
+        </li>
+    }
+</ul>

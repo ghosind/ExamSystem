@@ -1,0 +1,11 @@
+﻿@{
+    User user = (User)Session["user"];
+    if (user != null && user.rank >= (int)UserRank.TEACHER)
+    {
+        <li><a href="/News/New">发布新闻</a></li>
+        <hr />
+    }
+}
+<li><a href="/News">新闻</a></li>
+<li><a href="/Exam">考试</a></li>
+<hr />

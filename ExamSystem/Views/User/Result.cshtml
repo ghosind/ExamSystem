@@ -1,0 +1,56 @@
+﻿@{
+    List<Result> results = ViewBag.results;
+    int totalPageNumber = ViewBag.pageNumber;
+    int page = ViewBag.page;
+    ViewBag.Title = "成绩浏览";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<ul class="list-group es-news-list">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-6">考试名称</div>
+            <div class="col-md-4">考试科目</div>
+            <div class="col-md-2">分数</div>
+        </div>
+    </li>
+    @foreach (var result in results)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-6">@ExamView.GetExamById((int)result.eid).title</div>
+                <div class="col-md-4">@ExamView.GetExamById((int)result.eid).Subject1.subject_name</div>
+
+                @if (result.score == -1)
+                {
+                    <div class="col-md-2">未阅卷</div>
+                }
+                else
+                {
+                    <div class="col-md-2">@result.score</div>
+                }
+            </div>
+        </li>
+    }
+</ul>
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/User/Result/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < totalPageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/User/Result/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>

@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "建立群组";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_added_groups")
+}
+<form id="create" class="es-form" action="/Group/SubmitCreation">
+    <div class="row">
+        <div class="col-md-2">群组名称</div>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="groupname" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">允许自由加入</div>
+        <div class="col-md-4">
+            <input type="radio" name="allowjoin" value="true" />是
+            <input type="radio" name="allowjoin" value="false" />否
+        </div>
+        <div class="col-md-2">允许自由退出</div>
+        <div class="col-md-4">
+            <input type="radio" name="allowquit" value="true" />是
+            <input type="radio" name="allowquit" value="false" />否
+        </div>
+    </div>
+    <div class="row">
+        <input class="btn btn-primary btn-sm" type="submit" value="创建" />
+    </div>
+</form>
+<script>
+    $("#create").submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/Group/SubmitCreation",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data != 0) {
+                    alert("创建成功");
+                    location.href = "/Group/Detail/" + data;
+                } else {
+                    alert("创建失败");
+                }
+            }
+        });
+        event.preventDefault();
+    });
+</script>

@@ -1,0 +1,153 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>系统初始化</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="~/Scripts/html5shiv.min.js"></script>
+      <script src="~/Scripts/respond.min.js"></script>
+    <![endif]-->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style>
+        main {
+            width: 800px;
+            margin: 10px auto;
+        }
+
+        .row {
+            margin: 10px 0;
+        }
+
+        .warning-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <form id="install" method="POST" action="/Install/Install">
+            @if (Request.QueryString["error"] == "1")
+            {
+                <h2 class="warning-message">系统初始化失败，详细信息请查看es.log。</h2>
+            }
+            else
+            {
+                <h2>系统初始化设置</h2>
+            }
+            <hr />
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="server">服务器地址*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="server" name="server" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="type">身份验证类型*</label>
+                </div>
+                <div class="col-md-4">
+                    <select id="type" class="form-control" name="type" required>
+                        <option value="True">Windows 身份认证</option>
+                        <option value="False">SQL Server 身份认证</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="dbusername">数据库用户名</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="dbusername" name="dbusername">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="dbpassword">数据库密码</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="dbpassword" name="dbpassword">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="dbname">数据库名*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="dbname" name="dbname" required>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="username">管理员用户名*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="password">管理员密码*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="confirm">确认密码*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="password" class="form-control" id="confirm" name="confirm" data-toggle="popover" data-placement="bottom" data-content="两次填写的密码不一致" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="email">管理员邮箱*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="nickname">管理员昵称*</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" id="nickname" name="nickname" required>
+                </div>
+            </div>
+            <hr />
+            <ol>
+                <li>带*项为必填项</li>
+                <li>若选择SQL Server 身份认证则需填写数据库用户及密码</li>
+            </ol>
+            <hr />
+            <button class="btn btn-lg btn-primary" id="submit" type="submit">提交</button>
+        </form>
+    </main>
+    <script>
+        $('#install').submit(function (event) {
+            var password = $('#password');
+            var comfirm = $('#confirm');
+            if (password.val() === comfirm.val()) {
+                return true;
+            }
+
+            comfirm.popover('show');
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>

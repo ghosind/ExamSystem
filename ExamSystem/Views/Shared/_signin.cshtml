@@ -1,0 +1,40 @@
+﻿<div class="modal fade es-signin-frame" tabindex="-1" role="dialog" aria-labelledby="登录">
+    <div class="modal-dialog modal-sm" role="document">
+        <form class="es-signin" id="signin" action="/User/Login" method="POST">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">登录</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="username" class="form-control" placeholder="用户名" required>
+                <input type="password" name="password" class="form-control" placeholder="密码" required>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="remember"> 7天内免登录
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                <a class="btn btn-lg btn-primary btn-block" href="/User/Register">注册</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $('#signin').submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/User/LoginWithJson",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    window.location.reload()
+                } else {
+                    window.location.href = "/User/Login";
+                }
+            }
+        })
+        event.preventDefault();
+    });
+</script>

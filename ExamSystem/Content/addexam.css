@@ -1,0 +1,65 @@
+﻿.add-question-content {
+  display: none;
+}
+
+.exam-table-op {
+  width: 90px;
+}
+
+.exam-table-score {
+  width: 46px;
+}
+
+.exam-table-sc-answer {
+  width: 46px;
+}
+
+.exam-table-sc-choice {
+  width: 100px;
+  text-overflow: ellipsis;
+  max-width: 100px;
+  overflow: hidden;
+}
+
+.exam-table-sc-text {
+  width: 167px;
+  text-overflow: ellipsis;
+  max-width: 167px;
+  overflow: hidden;
+}
+
+.exam-table-mc-answer {
+  width: 55px;
+}
+
+.exam-table-mc-choice {
+  width: 100px;
+  text-overflow: ellipsis;
+  max-width: 100px;
+  overflow: hidden;
+}
+
+.exam-table-mc-text {
+  width: 158px;
+  text-overflow: ellipsis;
+  max-width: 158px;
+  overflow: hidden;
+}
+
+.exam-table-fd-answer {
+  width: 200px;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.exam-table-fd-text {
+  width: 413px;
+  text-overflow: ellipsis;
+  max-width: 413px;
+  overflow: hidden;
+}
+
+.exam-table-qid, .exam-table-choice-number {
+  display: none;
+}

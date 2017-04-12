@@ -1,0 +1,113 @@
+﻿@{ 
+    User user = (User) Session["user"];
+    if (user == null && Request.Cookies.Get("uid") != null)
+    {
+        user = UserController.LoginWithCookie(Request, Session);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - 在线考试系统</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/common.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="~/Scripts/html5shiv.min.js"></script>
+      <script src="~/Scripts/respond.min.js"></script>
+    <![endif]-->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/es.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("head", false)
+</head>
+<body>
+    <div class="es-wrap">
+        <header class="es-top navbar-fixed-top">
+            <div class="es-top-brand">
+                <a class="navbar-brand" href="/">在线考试系统</a>
+            </div>
+            <nav class="es-top-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="/Index">首页</a></li>
+                    <li><a href="/Exam">考试</a></li>
+                    <li><a href="/Group">群组</a></li>
+                    @if (user == null)
+                    {
+                        <li><a href="#" data-toggle="modal" data-target=".es-signin-frame">登录</a></li>
+                    }
+                    else
+                    {
+                        if (user.rank == (int) UserRank.ADMINISTATOR)
+                        {
+                            <li><a href="/Manage">管理</a></li>
+                        }
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@user.name<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/User/Profile">个人资料</a></li>
+                                <li><a href="/User/Result">成绩</a></li>
+                                <li><a href="/Message">消息</a></li>
+                                <li><a href="/User/Setting">设置</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a id="logout" href="#" onclick="javascript: logout();">注销</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            <div class="es-search-bar">
+                <form class="navbar-form navbar-right" action="/Search" method="get">
+                    <select class="form-control" name="type" required>
+                        <option value="1">新闻</option>
+                        <option value="2">考试</option>
+                        <option value="3">群组</option>
+                        <option value="4">用户</option>
+                    </select>
+                    <input type="text" class="form-control" placeholder="搜索..." name="content" required>
+                    <button type="submit" class="btn btn-default es-search-nav">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+        </header>
+        <div class="es-main-wrap">
+            <main class="es-content">
+                <span>@Html.MvcSiteMap().SiteMapPath()</span>
+                <hr />
+                @RenderBody()
+            </main>
+            <aside class="es-sidebar">
+                <ul class="nav nav-sidebar es-sidebar-nav">
+                    @RenderSection("sidebar")
+                    <li><a href="/Exam/MyExams">我的考试</a></li>
+                    <li><a href="/User/Result">我的成绩</a></li>
+                    <li>
+                        <a href="/Message">
+                            我的消息
+                            @if (user != null)
+                            {
+                                var number = MessageView.GetNewMessageNumber(user.uid);
+                                if (number != 0)
+                                {
+                                    <span class="badge">@number</span>
+                                }
+                            }
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+        <footer class="es-footer">
+            &copy; 2016 - @DateTime.Now.Year, 在线考试系统
+        </footer>
+        @if (user == null)
+        {
+            @Html.Partial("_signin");
+        }
+    </div>
+</body>
+</html>

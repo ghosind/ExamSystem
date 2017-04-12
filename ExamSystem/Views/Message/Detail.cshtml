@@ -1,0 +1,32 @@
+﻿@{
+    Message message = ViewBag.message;
+    bool isReceiver = ViewBag.isReceiver;
+    ViewBag.Title = message.title;
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar{
+    @if (isReceiver == true) {
+        <li><a href="/Message/New/@message.sender">回复</a></li>
+    <hr />
+    }
+    @Html.Partial("_sidebar")
+}
+<article>
+    <h3 class="news-detail-title">@message.title</h3>
+    <div class="row">
+        @if (isReceiver)
+        {
+            <div class="col-md-2">发件人：</div>
+            <div class="col-md-4">@UserView.GetUserById((int)message.sender).name</div>
+        }
+        else
+        {
+            <div class="col-md-2">收件人：</div>
+            <div class="col-md-4">@UserView.GetUserById((int)message.receiver).name</div>
+        }
+        <div class="col-md-2">时间：</div>
+        <div class="col-md-4">@message.send_date</div>
+    </div>
+    <br />
+    @message.content
+</article>

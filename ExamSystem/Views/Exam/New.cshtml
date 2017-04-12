@@ -1,0 +1,385 @@
+﻿@{
+    List<Group>
+    groups = ViewBag.groups;
+    List<Subject>
+        subjects = ViewBag.subjects;
+    ViewBag.Title = "新建考试";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section head {
+    <link href="~/Content/addexam.css" rel="stylesheet">
+    <script src="~/Scripts/addexam.js"></script>
+}
+@section sidebar {
+    <li><a href="#" onclick="save_exam()">保存</a></li>
+    @Html.Partial("_sidebar")
+}
+<form class="es-form" id="info" action="/Exam/SaveExam" method="POST">
+    <div class="row">
+        <div class="col-md-2">考试名称</div>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="title" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">考试科目</div>
+        <div class="col-md-4">
+            <select class="form-control" id="subject" name="subject" onchange="load_section()">
+                @foreach (var subject in subjects)
+                {
+                    <option value="@subject.sid">@subject.subject_name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">考试时长</div>
+        <div class="col-md-2">
+            <input class="form-control" type="number" name="time" />
+        </div>
+        <div class="col-md-2">分钟</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">开放时间</div>
+        <div class="col-md-4">
+            <input class="form-control" type="datetime-local" name="start" />
+        </div>
+        <div class="col-md-2">结束时间</div>
+        <div class="col-md-4">
+            <input class="form-control" type="datetime-local" name="end" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">开放参加</div>
+        <div class="col-md-4">
+            <input type="radio" name="public" value="true">是
+            <input type="radio" name="public" value="false">否
+        </div>
+        <div class="col-md-2">必须参加</div>
+        <div class="col-md-4">
+            <input type="radio" name="musttake" value="true">是
+            <input type="radio" name="musttake" value="false">否
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">考试群组</div>
+        <div class="col-md-8">
+            <input class="form-control" id="group" name="groups">
+        </div>
+        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target=".select_group">添加群组</a>
+    </div>
+</form>
+<div class="row">
+    <div class="col-md-2">
+        <a class="btn btn-sm btn-primary" href="#" onclick="add(0)">添加单选题</a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-sm btn-primary" href="#" onclick="add(1)">添加多选题</a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-sm btn-primary" href="#" onclick="add(2)">添加填空题</a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-sm btn-primary" href="#" onclick="add(3)">添加问答题</a>
+    </div>
+</div>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td></td>
+            <td>单选题</td>
+            <td>多选题</td>
+            <td>填空题</td>
+            <td>问答题</td>
+            <td>全部</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>题数</td>
+            <td id="scnum">0</td>
+            <td id="mcnum">0</td>
+            <td id="fqnum">0</td>
+            <td id="dqnum">0</td>
+            <td id="aqnum">0</td>
+        </tr>
+        <tr>
+            <td>分值</td>
+            <td id="scscr">0</td>
+            <td id="mcscr">0</td>
+            <td id="fqscr">0</td>
+            <td id="dqscr">0</td>
+            <td id="aqscr">0</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>单选题文本</td>
+            <td>选项1</td>
+            <td>选项2</td>
+            <td>选项3</td>
+            <td>选项4</td>
+            <td class="exam-table-sc-answer">答案</td>
+            <td class="exam-table-score">分值</td>
+            <td class="exam-table-op">操作</td>
+        </tr>
+    </thead>
+    <tbody id="sc_area"></tbody>
+</table>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>多选题文本</td>
+            <td>选项1</td>
+            <td>选项2</td>
+            <td>选项3</td>
+            <td>选项4</td>
+            <td class="exam-table-mc-answer">答案</td>
+            <td class="exam-table-score">分值</td>
+            <td class="exam-table-op">操作</td>
+        </tr>
+    </thead>
+    <tbody id="mc_area"></tbody>
+</table>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>填空题文本</td>
+            <td>答案</td>
+            <td class="exam-table-score">分值</td>
+            <td class="exam-table-op">操作</td>
+        </tr>
+    </thead>
+    <tbody id="fq_area"></tbody>
+</table>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>问答题文本</td>
+            <td>答案</td>
+            <td class="exam-table-score">分值</td>
+            <td class="exam-table-op">操作</td>
+        </tr>
+    </thead>
+    <tbody id="dq_area"></tbody>
+</table>
+<div class="modal fade select_group" role="dialog" tabindex="-1" aria-labelledby="selectgroup" style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="selectgroup">选择群组</h4>
+            </div>
+            <div class="modal-body">
+                @foreach (var group in groups)
+                {
+                    <div class="row">
+                        <input class="groups" type="checkbox" value="@group.gid" />@group.group_name
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-primary" onclick="selected_group()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade add-question" role="dialog" tabindex="-1" aria-labelledby="addquestion" style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="addquestion">新增题目</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="questiontype" style="display: none"></span>
+                    <div id="add-sc" class="add-question-content es-form">
+                        <div class="row">
+                            <div class="col-md-2">题目文本</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="text" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项数量</div>
+                            <div class="col-md-4">
+                                <input class="form-control" type="number" name="number" min="1" max="4" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项A</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choicea" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项B</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choiceb" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项C</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choicec" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项D</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choiced" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">正确答案</div>
+                            <div class="col-md-10">
+                                <input type="radio" name="answer" value="1" required />A
+                                <input type="radio" name="answer" value="2" required />B
+                                <input type="radio" name="answer" value="3" required />C
+                                <input type="radio" name="answer" value="4" required />D
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">分值</div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" name="score" min="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="add-mc" class="add-question-content es-form">
+                        <div class="row">
+                            <div class="col-md-2">题目文本</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="text" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项数量</div>
+                            <div class="col-md-4">
+                                <input class="form-control" type="number" name="number" min="1" max="4" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项A</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choicea" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项B</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choiceb" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项C</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choicec" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">选项D</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="choiced" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">正确答案</div>
+                            <div class="col-md-10">
+                                <input type="checkbox" name="answer" value="1" />A
+                                <input type="checkbox" name="answer" value="2" />B
+                                <input type="checkbox" name="answer" value="3" />C
+                                <input type="checkbox" name="answer" value="4" />D
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">分值</div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" name="score" min="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="add-fq" class="add-question-content es-form">
+                        <div class="row">
+                            <div class="col-md-2">题目文本</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="text" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">参考答案</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="answer" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">分值</div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" name="score" min="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="add-dq" class="add-question-content es-form">
+                        <div class="row">
+                            <div class="col-md-2">题目文本</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="text" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">参考答案</div>
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" name="answer" required min="1" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">分值</div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" name="score" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target=".load_question">从题库选择</a>
+                    <button class="btn btn-sm btn-primary" type="reset" onclick="add_question()">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade load_question" role="dialog" tabindex="-2" aria-labelledby="loadquestion" style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="loadquestion">选择题目</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2">章节</div>
+                        <div class="col-md-4">
+                            <select class="form-control" id="section"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary btn-sm" type="button" onclick="load_question()">加载题目</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="questions" style="margin-left: 10px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" type="reset" onclick="selected_question()">确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,295 @@
+﻿@{
+    List<Subject> subjects = ViewBag.subjects;
+    ViewBag.Title = "新建试题";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<div>
+    <h3>难度指数范围为0～1</h3>
+    <form class="es-form" action="/Manage/SubmitQuestion">
+        <h3>新建单项选择题</h3>
+        <input type="hidden" name="type" value="@((int) QuestionType.SINGLECHOICE)" />
+        <div class="row" id="scs">
+            <div class="col-md-2">学科</div>
+            <div class="col-md-4">
+                <select class="form-control subject" onchange="load_section('#scs')">
+                    @foreach (var subject in subjects)
+                    {
+                        <option value="@subject.sid">@subject.subject_name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">章节</div>
+            <div class="col-md-4">
+                <select class="form-control section" name="section">
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">题目文本</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="text" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项数量</div>
+            <div class="col-md-4">
+                <input class="form-control" type="number" name="number" min="1" max="4" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项A</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choicea" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项B</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choiceb" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项C</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choicec" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项D</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choiced" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">正确答案</div>
+            <div class="col-md-10">
+                <input type="radio" name="answer" value="1" required />A
+                <input type="radio" name="answer" value="2" required />B
+                <input type="radio" name="answer" value="3" required />C
+                <input type="radio" name="answer" value="4" required />D
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">难度指数</div>
+            <div class="col-md-4">
+                <input class="form-control" type="text" name="difficulty" required />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="submit" value="提交" />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="reset" value="清空" />
+            </div>
+        </div>
+    </form>
+    <hr />
+    <form class="es-form" action="/Manage/SubmitQuestion">
+        <h3>新建多项选择题</h3>
+        <input type="hidden" name="type" value="@((int) QuestionType.MULTICHOICE)" />
+        <div class="row" id="mcs">
+            <div class="col-md-2">学科</div>
+            <div class="col-md-4">
+                <select class="form-control subject" onchange="load_section('#mcs')">
+                    @foreach (var subject in subjects)
+                    {
+                        <option value="@subject.sid">@subject.subject_name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">章节</div>
+            <div class="col-md-4">
+                <select class="form-control section" name="section"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">题目文本</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="text" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项数量</div>
+            <div class="col-md-4">
+                <input class="form-control" type="number" name="number" min="1" max="4" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项A</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choicea" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项B</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choiceb" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项C</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choicec" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">选项D</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="choiced" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">正确答案</div>
+            <div class="col-md-10">
+                <input type="checkbox" name="answer" value="1" />A
+                <input type="checkbox" name="answer" value="2" />B
+                <input type="checkbox" name="answer" value="3" />C
+                <input type="checkbox" name="answer" value="4" />D
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">难度指数</div>
+            <div class="col-md-4">
+                <input class="form-control" type="text" name="difficulty" required />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="submit" value="提交" />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="reset" value="清空" />
+            </div>
+        </div>
+    </form>
+    <hr />
+    <form class="es-form" action="/Manage/SubmitQuestion">
+        <h3>新建填空题</h3>
+        <input type="hidden" name="type" value="@((int) QuestionType.FILLIN)" />
+        <div class="row" id="fqs">
+            <div class="col-md-2">学科</div>
+            <div class="col-md-4">
+                <select class="form-control subject" onchange="load_section('#fqs')">
+                    @foreach (var subject in subjects)
+                    {
+                        <option value="@subject.sid">@subject.subject_name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">章节</div>
+            <div class="col-md-4">
+                <select class="form-control section" name="section"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">题目文本</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="text" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">参考答案</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="answer" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">难度指数</div>
+            <div class="col-md-4">
+                <input class="form-control" type="text" name="difficulty" required />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="submit" value="提交" />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="reset" value="清空" />
+            </div>
+        </div>
+    </form>
+    <hr />
+    <form class="es-form" action="/Manage/SubmitQuestion">
+        <h3>新建问答题</h3>
+        <input type="hidden" name="type" value="@((int) QuestionType.DISCUSS)" />
+        <div class="row" id="dqs">
+            <div class="col-md-2">学科</div>
+            <div class="col-md-4">
+                <select class="form-control subject" onchange="load_section('#dqs')">
+                    @foreach (var subject in subjects)
+                    {
+                        <option value="@subject.sid">@subject.subject_name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">章节</div>
+            <div class="col-md-4">
+                <select class="form-control section" name="section"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">题目文本</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="text" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">参考答案</div>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="answer" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">难度指数</div>
+            <div class="col-md-4">
+                <input class="form-control" type="text" name="difficulty" required />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="submit" value="提交" />
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm" type="reset" value="清空" />
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(".es-form").submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/Manage/SubmitQuestion",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    alert("添加成功");
+                    $(this).reset();
+                } else {
+                    alert("添加失败");
+                }
+            }
+        })
+        event.preventDefault();
+    })
+
+    function load_section(id) {
+        var subject = $(id + " > .col-md-4 > .subject option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "/Manage/GetSectionsBySubject",
+            data: "subject=" + subject,
+            success: function (data) {
+                if (data != null) {
+                    $(id + " > .col-md-4 > .section").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        $(id + " > .col-md-4 > .section").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
+                    }
+                }
+            }
+        });
+    }
+
+    $('document').ready(function (event) {
+        load_section("#scs");
+        load_section("#mcs");
+        load_section("#fqs");
+        load_section("#dqs");
+    })
+</script>

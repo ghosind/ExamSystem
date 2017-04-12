@@ -1,0 +1,15 @@
+﻿@{ 
+    User user = (User)Session["user"];
+    List<GroupMember> groups = GroupView.GetGroupMemberByUID(user.uid).ToList();
+}
+@if (groups.Count != 0)
+{
+    foreach (var group in groups)
+    {
+        <li><a href="/Group/Detail/@group.gid">@group.Group.group_name</a></li>
+    }
+    <hr />
+}
+<li><a href="/News">新闻</a></li>
+<li><a href="/Exam">考试</a></li>
+<hr />

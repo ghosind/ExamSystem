@@ -1,0 +1,148 @@
+﻿@{
+    User user = ViewBag.user;
+    UserInfo info = ViewBag.info;
+    User loginedUser = ViewBag.loginedUser;
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section head {
+    <script>
+        function save_data() {
+            $.ajax({
+                type: "POST",
+                url: "/User/SaveProfile",
+                data: $('#profile').serialize() + "&id=@user.uid",
+                success: function (data) {
+                    if (data === true) {
+                        $('#message').text("保存成功");
+                    } else {
+                        $('#message').text("保存失败");
+                    }
+                    $('.messagebox').modal();
+                }
+            });
+        }
+    </script>    
+}
+@section sidebar {
+    <li><a href="/User/Profile/@user.uid">返回</a></li>
+    <li><a href="#" onclick="save_data()">保存</a></li>
+    @Html.Partial("_sidebar")
+}
+<form class="es-form" id="profile" onload="load_data()" onsubmit="save_data()">
+    <div class="row">
+        <div class="col-md-2">
+            UID：
+        </div>
+        <div class="col-md-4">
+            @user.uid
+        </div>
+        <div class="col-md-2">
+            用户名：
+        </div>
+        <div class="col-md-4">
+            @user.username
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            昵称：
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" type="text" name="nickname" value="@user.name" />
+        </div>
+        <div class="col-md-2">
+            用户权限：
+        </div>
+        <div class="col-md-4">
+            @if (loginedUser.rank == (int)UserRank.ADMINISTATOR)
+            {
+                <select class="form-control" name="rank">
+                    <option value="1">普通用户</option>
+                    <option value="2">教师</option>
+                    <option value="3">管理员</option>
+                    <option value="0">禁用</option>
+                </select>
+            }
+            else
+            {
+                @user.rank
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            性别：
+        </div>
+        <div class="col-md-4">
+            <input class="radio-inline" type="radio" name="sex" value="男" />男
+            <input class="radio-inline" type="radio" name="sex" value="女" />女
+        </div>
+        <div class="col-md-2">
+            生日：
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" type="date" name="birthday" value="@info.birthday.ToString("yyyy-MM-dd")" />
+        </div>
+    </div>
+    @if (loginedUser.rank == (int)UserRank.ADMINISTATOR)
+    {
+        <div class="row">
+            <div class="col-md-2">
+                邮箱：
+            </div>
+            <div class="col-md-10">
+                <input class="form-control" type="email" name="email" value="@info.email" />
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-2">
+            联系号码：
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" type="tel" name="telephone" value="@info.telephone"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            地址：
+        </div>
+        <div class="col-md-10">
+            <input class="form-control" type="text" name="address" value="@info.address" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            个人介绍：
+        </div>
+        <div class="col-md-10">
+            <textarea class="form-control" name="description" rows="5">@info.description</textarea>
+        </div>
+    </div>
+</form>
+<div class="modal fade messagebox" role="dialog" tabindex="-1" aria-labelledby="ProfileSave" style="display: none;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">资料编辑</h4>
+            </div>
+            <div class="modal-body">
+                <span id="message"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var sex = "@info.sex";
+
+    if (sex == "男") {
+        $("input[name='sex']").eq(0).click();
+    } else {
+        $("input[name='sex']").eq(1).click();
+    }
+    $("option[value=@user.rank]").attr("selected", true);
+</script>

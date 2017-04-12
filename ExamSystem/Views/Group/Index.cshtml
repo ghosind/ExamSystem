@@ -1,0 +1,65 @@
+﻿@{
+    List<Group> groups = ViewBag.groups;
+    int totalPageNumber = ViewBag.totalPageNumber;
+    int page = ViewBag.page;
+    User user = ViewBag.user;
+    ViewBag.Title = "群组列表";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @if (user.rank >= (int)UserRank.TEACHER)
+    {
+        <li><a href="/Group/Create">建立群组</a></li>
+        <hr />
+    }
+    @Html.Partial("_added_groups")
+}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-6">群组名</div>
+            <div class="col-md-2">拥有者</div>
+            <div class="col-md-2">人数</div>
+            <div class="col-md-2">加入</div>
+        </div>
+    </li>
+    @foreach (var g in groups)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-6">@g.group_name</div>
+                <div class="col-md-2">@UserView.GetUserById((int)g.owner_uid).name</div>
+                <div class="col-md-2">@g.number</div>
+                <div class="col-md-2">
+                    @if (g.allow_join)
+                {
+                        <a class="btn btn-sm btn-primary es-exam-list-enter" href="#" onclick="join_group(@g.gid)">加入群组</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-primary es-exam-list-enter disabled">加入群组</a>
+                    }
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/Group/Index/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < totalPageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/Group/Index/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>

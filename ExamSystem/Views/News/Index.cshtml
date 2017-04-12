@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "新闻列表";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    List<News> news = ViewBag.news;
+    int page = ViewBag.page;
+    int totalPageNumber = ViewBag.totalPageNumber;
+}
+@section sidebar {
+    @Html.Partial("_list_sidebar")    
+}
+<ul class="list-group es-news-list">
+    @foreach (var n in news)
+    {
+        <li class="list-group-item">
+            <div class="list-group-item-heading">
+                <a href="/News/Detail/@n.nid">@n.title</a>
+            </div>
+            <div class="list-group-item-text">
+                @n.content.Substring(0, (n.content.Length < 50 ? n.content.Length : 50))
+            </div>
+        </li>
+    }
+</ul>
+<br />
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/News/Index/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < totalPageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/News/Index/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>

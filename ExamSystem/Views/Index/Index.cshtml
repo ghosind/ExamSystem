@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_index_sidebar")
+}
+@Html.Partial("_news")
+@Html.Partial("_exams")

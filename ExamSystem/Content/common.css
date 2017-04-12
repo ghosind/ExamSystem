@@ -1,0 +1,185 @@
+html, body {
+  height: 100%;
+}
+
+.es-wrap {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  position: relative;
+}
+
+.es-top {
+  background-color: #0767c8;
+  border-bottom: 1px solid #002050;
+}
+
+.es-top-brand {
+  margin-left: 150px;
+}
+
+.es-top-nav {
+  margin-right: 150px;
+}
+
+.es-main-wrap {
+  margin: 0 auto;
+  width: 960px;
+  overflow: hidden;
+  padding-top: 81px;
+  padding-bottom: 50px;
+  display: block
+}
+
+.es-content {
+  padding: 5px;
+  float: left;
+  width: 760px;
+}
+
+.es-sidebar {
+  padding-top: 20px;
+  padding-left: 20px;
+  float: right;
+  width: 200px;
+  height: 100%;
+}
+
+.es-footer {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  bottom: 0;
+  position: absolute;
+  color: gray;
+  text-align: center;
+  display: block;
+  overflow: hidden;
+}
+
+.es-signin {
+  margin: 0 auto;
+  width: 300px;
+  background: #eee;
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
+
+.es-profile .row {
+    margin-top: 5px;
+}
+
+/* exam page */
+.es-exam-body {
+  background: #eee;
+}
+
+.es-paper {
+  border: 1px solid #777;
+  max-width: 960px;
+  min-width: 600px;
+  min-height: 100%;
+  margin: 10px auto;
+  background: white;
+}
+
+.es-exam-header {
+  text-align: center;
+}
+
+.es-exam-content {
+  font-size: 18px;
+  margin: 50px 0;
+}
+
+.es-question {
+  font-weight: normal;
+  width: 100%;
+}
+
+.es-answer {
+  margin-left: 25px !important;
+}
+
+.es-exam-submit {
+  float: right;
+}
+
+.es-exam-list a {
+  margin-right: 5px;
+}
+
+.es-pager-previous {
+  display: inline-block;
+}
+
+.es-pager-num {
+  display: inline-block;
+  width: 626px;
+  text-align: center;
+}
+
+.es-pager-next {
+  display: inline-block;
+}
+
+.es-news-list .list-group-item-text {
+  color: black;
+}
+
+.es-exam-list-enter {
+  line-height: 1;
+}
+
+.es-list-more > a {
+  margin: 0;
+}
+
+.es-warning {
+    color: red;
+    display: none;
+}
+
+.es-form .row {
+  margin: 10px 0;
+}
+
+/* overload bootstrap */
+.es-top a, .es-top a:hover, .es-top a:visited, .btn a, .btn a:hover, .btn a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-brand, .navbar-brand:hover, .dropdown-menu, .dropdown-menu>li>a, .navbar-nav>li>a, .nav .open>a {
+  background-color: #0767c8;
+  color: white;
+}
+
+.dropdown-menu>li>a:hover, .navbar-nav>li>a:hover, .navbar-nav>li>a:focus, .nav .open>a:hover, .nav .open>a:focus {
+  background-color: #0060c1;
+  color: #eee;
+}
+
+.nav-sidebar>li>a {
+  font-size: 1.1em;
+  color: #777;
+}
+
+.nav-sidebar>li>a:hover {
+  background: #eeffff;
+  color: #777;
+  text-decoration: underline;
+}
+
+.badge {
+  float: right;
+}
+
+.list-group-item-heading {
+  color: #337ab7;
+}
+
+/* overload MathJax*/
+.MJXc-display {
+  display: inline-block;
+}

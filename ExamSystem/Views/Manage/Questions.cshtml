@@ -1,0 +1,87 @@
+﻿@{
+    List<Question> questions = ViewBag.questions;
+    int page = ViewBag.page;
+    int pageNumber = ViewBag.pageNumber;
+    string[] types = { "单项选择题", "多项选择题", "填空题", "问答题" };
+    ViewBag.Title = "题库管理";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-6">题目文本</div>
+            <div class="col-md-2">类型</div>
+            <div class="col-md-2">难度</div>
+            <div class="col-md-2">操作</div>
+        </div>
+    </li>
+    @foreach (var question in questions)
+    {
+        <li class="list-group-item">
+            <div class="row" id="q_@question.qid">
+                @switch (question.type)
+                {
+                    case (int)QuestionType.SINGLECHOICE:
+                        <div class="col-md-6">@ExamView.GetChoiceQuestionByQid(question.qid).content</div>
+                        break;
+                    case (int)QuestionType.MULTICHOICE:
+                        <div class="col-md-6">@ExamView.GetChoiceQuestionByQid(question.qid).content</div>
+                        break;
+                    case (int)QuestionType.FILLIN:
+                        <div class="col-md-6">@ExamView.GetFillQuestionByQid(question.qid).content</div>
+                        break;
+                    case (int)QuestionType.DISCUSS:
+                        <div class="col-md-6">@ExamView.GetDiscussQuestionByQid(question.qid).content</div>
+                        break;
+                    default:
+                        break;
+                }
+                <div class="col-md-2">@types[question.type]</div>
+                <span id="type" style="display: none">@question.type</span>
+                <div class="col-md-2">@Difficulty.CalculateDifficulty(question).ToString("f2")</div>
+                <div class="col-md-2">
+                    <button class="btn btn-sm btn-primary btn-danger" onclick="delete_question(@question.qid)"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+<br />
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/Manage/Questions/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < pageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/Manage/Questions/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>
+<script>
+    function delete_question(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Manage/DeleteQuestion",
+            data: "qid=" + id,
+            success: function (data) {
+                if (data === true) {
+                    alert("删除成功");
+                } else {
+                    alert("删除失败");
+                }
+            }
+        });
+    }
+</script>

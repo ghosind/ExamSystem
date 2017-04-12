@@ -1,0 +1,128 @@
+﻿@{
+    User user = ViewBag.user;
+    UserInfo info = ViewBag.info;
+    User loginedUser = ViewBag.loginedUser;
+    string[] ranks = { "已禁用", "普通用户", "教师", "管理员" };
+    ViewBag.Title = user.name + " - 用户资料";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @if (loginedUser.uid == user.uid || loginedUser.rank == (int)UserRank.ADMINISTATOR)
+    {
+        <li><a href="/User/Edit/@user.uid">编辑资料</a></li>
+    }
+    @if (loginedUser.uid != user.uid)
+    {
+        <li><a href="/Message/New/@user.uid">发消息</a></li>
+    }
+    @Html.Partial("_sidebar")
+}
+<div class="es-profile">
+    <div class="row">
+        <div class="col-md-2">
+            UID：
+        </div>
+        <div class="col-md-4">
+            @user.uid
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            用户名：
+        </div>
+        <div class="col-md-4">
+            @user.username
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            昵称：
+        </div>
+        <div class="col-md-4">
+            @user.name
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            用户权限：
+        </div>
+        <div class="col-md-4">
+            @ranks[user.rank]
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            性别：
+        </div>
+        <div class="col-md-4">
+            @info.sex
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            生日：
+        </div>
+        <div class="col-md-4">
+            @info.birthday.ToLongDateString()
+        </div>
+    </div>
+    @if (loginedUser.uid == user.uid || loginedUser.rank == (int)UserRank.ADMINISTATOR)
+    {
+        <div class="row">
+            <div class="col-md-2">
+                注册时间：
+            </div>
+            <div class="col-md-4">
+                @info.reg_date.ToLongDateString() @info.reg_date.ToLongTimeString()
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                上次登录时间：
+            </div>
+            <div class="col-md-4">
+                @user.login_date.ToLongDateString() @user.login_date.ToLongTimeString()
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                邮箱：
+            </div>
+            <div class="col-md-10">
+                @info.email
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                邮箱验证状态：
+            </div>
+            <div class="col-md-4">
+                @(info.email_valid ? "已验证" : "未验证")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                联系号码：
+            </div>
+            <div class="col-md-4">
+                @info.telephone
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                地址：
+            </div>
+            <div class="col-md-10">
+                @info.address
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-2">
+            个人介绍：
+        </div>
+        <div class="col-md-10">
+            @info.description
+        </div>
+    </div>
+</div>

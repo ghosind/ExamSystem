@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "注册";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_not_login_sidebar")
+}
+<form class="es-form" id="register" method="POST" action="/User/Register">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <label for="username">用户名</label>
+        </div>
+        <div class="col-md-4">
+            <input type="text" id="username" name="username" class="form-control" data-toggle="popover" data-placement="bottom" data-content="该用户名已被使用" onblur="javascript: username_validate();" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <label for="email">邮箱</label>
+        </div>
+        <div class="col-md-4">
+            <input type="email" id="email" name="email" class="form-control" data-toggle="popover" data-placement="bottom" data-content="该邮箱已被使用" onblur="javascript: email_validate();" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <label for="password">密码</label>
+        </div>
+        <div class="col-md-4">
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <label for="confirm">确认密码</label>
+        </div>
+        <div class="col-md-4">
+            <input type="password" id="confirm" name="confirm" class="form-control" data-toggle="popover" data-placement="bottom" data-content="两次填写的密码不一致" onblur="javascript: password_validate();" required>
+        </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="nickname">用户名</label>
+        </div>
+        <div class="col-md-4">
+            <input type="text" id="nickname" name="nickname" class="form-control" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <span class="es-warning">注册失败，请稍后重试或联系管理员。</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <button id="submit" class="btn btn-lg btn-primary btn-block disabled" type="submit">注册</button>
+        </div>
+    </div>
+</form>
+<script src="~/Scripts/register.js"></script>

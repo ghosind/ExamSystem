@@ -1,0 +1,48 @@
+﻿@{
+    List<Subject> subjects = ViewBag.subjects;
+    ViewBag.Title = "添加章节";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<form class="es-form" id="newsubject" action="/Manage/NewSection">
+    <div class="row">
+        <div class="col-md-2">章节名称</div>
+        <dic class="col-md-10">
+            <select class="form-control" name="sid" type="text">
+                @foreach (var subject in subjects)
+                {
+                    <option value="@subject.sid">@subject.subject_name</option>
+                }
+            </select>
+        </dic>
+    </div>
+    <div class="row">
+        <div class="col-md-2">章节名称</div>
+        <dic class="col-md-10">
+            <input class="form-control" name="name" type="text" />
+        </dic>
+    </div>
+    <div class="row">
+        <input class="btn btn-primary btn-lg" type="submit" value="提交" />
+    </div>
+</form>
+<script>
+    $("#newsubject").submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/Manage/NewSection",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    alert("添加成功");
+                    $(this).reset();
+                } else {
+                    alert("添加失败");
+                }
+            }
+        });
+        event.preventDefault();
+    });
+</script>

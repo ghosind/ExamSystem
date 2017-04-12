@@ -1,0 +1,13 @@
+﻿@{
+    User user = (User)Session["user"];
+    if (user != null && user.rank == (int)UserRank.ADMINISTATOR)
+    {
+        <li><a href="/News/Edit/@ViewBag.news.nid">编辑</a></li>
+        <li><a href="#" data-toggle="modal" data-target=".es-delete-dialog">删除</a></li>
+        <hr />
+    }
+}
+<li><a href="#" onclick="javascript: history.back()">返回</a></li>
+<li><a href="/News">新闻</a></li>
+<li><a href="/Exam">考试</a></li>
+<hr />

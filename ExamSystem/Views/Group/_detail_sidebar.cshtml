@@ -1,0 +1,19 @@
+﻿@{ 
+    GroupMember memberInfo = ViewBag.memberInfo;
+}
+<li><a href="/Group/Detail/@memberInfo.gid">群组首页</a></li>
+@if (memberInfo.rank == (int)MemberRank.CREATOR)
+{
+    <li><a href="#" onclick="dismiss_group(@memberInfo.gid)">解散群组</a></li>
+}
+else
+{
+    <li><a href="#" onclick="quit_group(@memberInfo.gid)">退出群组</a></li>
+}
+@if (memberInfo.rank > (int)MemberRank.MEMBER)
+{
+    <li><a href="/Group/AddMember/@memberInfo.gid">添加成员</a></li>
+}
+<li><a href="/Group/Members/@memberInfo.gid">成员列表</a></li>
+<li><a href="/Group/Exams/@memberInfo.gid">考试列表</a></li>
+<hr />

@@ -1,0 +1,38 @@
+﻿@{
+    GroupMember memberInfo = ViewBag.memberInfo;
+    ViewBag.Title = "添加成员";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")   
+    @Html.Partial("_added_groups")  
+}
+<div class="es-form">
+    <div class="row">
+        <div class="col-md-2">用户名</div>
+        <div class="col-md-6">
+            <input class="form-control" id="username" type="text" />
+        </div>
+        <div class="col-md-2">
+            <input class="btn btn-primary btn-sm" value="添加" onclick="add_member()" />
+        </div>
+    </div>
+</div>
+<script>
+    function add_member() {
+        var username = $('#username').val();
+        $.ajax({
+            type: "POST",
+            url: "/Group/Add",
+            data: "username=" + username + "&gid=@memberInfo.gid",
+            success: function (data) {
+                if (data === true) {
+                    alert("添加成功");
+                    $('#username').val("");
+                } else {
+                    alert("添加失败");
+                }
+            }
+        });
+    }
+</script>

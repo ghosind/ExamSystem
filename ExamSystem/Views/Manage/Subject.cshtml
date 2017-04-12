@@ -1,0 +1,110 @@
+﻿@{
+    List<Subject> subjects = ViewBag.subjects;
+    int page = ViewBag.page;
+    int pageNumber = ViewBag.pageNumber;
+    ViewBag.Title = "学科管理";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_sidebar")
+}
+<ul class="list-group">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-8">名称</div>
+            <div class="col-md-4">操作</div>
+        </div>
+    </li>
+    @foreach (var subject in subjects)
+    {
+        <li class="list-group-item" id="s_@subject.sid">
+            <div class="row">
+                <div class="col-md-8 subject-name">@subject.subject_name</div>
+                <div class="col-md-4">
+                    <button class="btn btn-sm btn-primary" onclick="edit_subject(@subject.sid)"><span class="glyphicon glyphicon-edit"></span></button>
+                    <button class="btn btn-sm btn-primary btn-danger" onclick="delete_subject(@subject.sid)"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+<br />
+<div class="es-pager">
+    @if (page > 1)
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous" href="/Manage/Subject/@(page - 1)">上一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-previous disabled" href="#">上一页</a>
+    }
+    <div class="es-pager-num">第 @page 页</div>
+    @if (page < pageNumber)
+    {
+        <a class="btn btn-sm btn-primary es-pager-next" href="/Manage/Subject/@(page + 1)">下一页</a>
+    }
+    else
+    {
+        <a class="btn btn-sm btn-primary es-pager-next disabled" href="#">下一页</a>
+    }
+</div>
+<div class="modal fade edit-subject" role="dialog" tabindex="-1" aria-labelledby="editsubject" style="display: none;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="editsubject">学科编辑</h4>
+            </div>
+            <div class="modal-body">
+                <span id="sid" style="display:none"></span>
+                <input class="form-control" id="subjectname" type="text" />
+                <button class="btn btn-sm btn-primary" onclick="save_change()">确定</button> 
+                <span class="es-warning" id="warning">保存失败</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function delete_subject(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Manage/DeleteSubject",
+            data: "sid=" + id,
+            success: function (data) {
+                if (data === true) {
+                    alert("删除成功");
+                    $("#s_" + id).remove();
+                } else {
+                    alert("删除失败");
+                }
+            }
+        });
+    }
+
+    function edit_subject(id) {
+        var text = $('#s_' + id + ' > .row > .subject-name').text();
+        $('#subjectname').val(text);
+        $('#sid').text(id);
+        $('.edit-subject').modal('show');
+    }
+
+    function save_change() {
+        var id = $('#sid').text();
+        var text = $('#subjectname').val();
+        $.ajax({
+            type: "POST",
+            url: "/Manage/SaveSubject",
+            data: "sid=" + id + '&name=' + text,
+            success: function (data) {
+                if (data === true) {
+                    $('.edit-subject').modal('hide');
+                    $('#s_' + id + ' > .row > .subject-name').text(text);
+                } else {
+                    $('#warning').fadeIn();
+                }
+            }
+        });
+    }
+</script>

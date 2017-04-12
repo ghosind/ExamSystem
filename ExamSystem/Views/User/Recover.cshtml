@@ -1,0 +1,58 @@
+﻿@{
+    User user = ViewBag.user;
+    string code = ViewBag.code;
+    ViewBag.Title = "恢复账户";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_not_login_sidebar")
+}
+<div class="es-form">
+    <form id="resetpassword" action="/User/ResetPassword">
+        <input type="hidden" name="uid" value="@user.uid" />
+        <input type="hidden" name="code" value="@code" />
+        <div class="row">
+            <div class="col-md-2">新密码</div>
+            <div class="col-md-10">
+                <input class="form-control" type="password" name="password" id="password" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">确认密码</div>
+            <div class="col-md-10">
+                <input class="form-control" type="password" id="confirm" name="confirm" data-toggle="popover" data-placement="bottom" data-content="两次输入的密码不一致" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <input class="btn btn-primary btn-sm disabled" id="submit" type="submit" value="提交" />
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $('#confirm').blur(function () {
+        if ($(this).val() != $('#password').val()) {
+            $(this).popover('show');
+        } else {
+            $("#submit").removeClass("disabled");
+        }
+    })
+
+    $('#resetpassword').submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/User/ResetPassword",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    alert("修改成功");
+                    window.location.href = "/Index";
+                } else {
+                    alert("修改失败");
+                }
+            }
+        });
+        event.preventDefault();
+    })
+</script>

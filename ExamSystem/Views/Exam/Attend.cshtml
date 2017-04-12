@@ -1,0 +1,62 @@
+﻿@{
+    Exam exam = ViewBag.exam;
+    string questions = ViewBag.questions;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/common.css" rel="stylesheet">
+    <title>@exam.title</title>
+    <!--[if lt IE 9]>
+      <script src="~/Scripts/html5shiv.min.js"></script>
+      <script src="~/Scripts/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="~/Scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/javascript" src="~/Scripts/exam.js"></script>
+</head>
+<body class="es-exam-body">
+    <div class="es-paper container">
+        <form class="es-form" id="exam">
+            <header class="es-exam-header">
+                <h2>@exam.title</h2>
+                <h3>@SubjectView.GetSubjectById((int) exam.subject).subject_name</h3>
+            </header>
+            <main class="es-exam-content">
+                <input type="hidden" name="eid" value="@exam.eid" />
+            </main>
+            <footer>
+                <button class="es-exam-submit btn btn-lg btn-primary" type="submit">提交</button>
+            </footer>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        var xml_content = "@questions";
+        load_questions(xml_content);
+    })
+
+    $('#exam').submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/Exam/Submit",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    alert("交卷成功");
+                    location.href = "/Exam";
+                } else {
+                    alert("交卷失败");
+                }
+            }
+        })
+        event.preventDefault();
+    })
+</script>

@@ -1,0 +1,67 @@
+﻿@{
+    List<Exam> exams = ViewBag.exams;
+    ViewBag.Title = "考试列表";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")
+    @Html.Partial("_added_groups")
+}
+<ul class="list-group es-news-list">
+    @foreach (var exam in exams)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2">考试名称</div>
+                <div class="col-md-10"><a href="/Exam/Detail/@exam.eid">@exam.title</a></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">考试科目</div>
+                <div class="col-md-10">
+                    <a href="/Exam/Detail/@exam.eid">
+                        @SubjectView.GetSubjectById((int)exam.subject).subject_name
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">考试时间</div>
+                <div class="col-md-4">@exam.start_date.ToLongDateString()</div>
+                <div class="col-md-2">截止时间</div>
+                <div class="col-md-4">@exam.end_date.ToLongDateString()</div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">考试状态</div>
+                <div class="col-md-4">
+                    @{
+                        DateTime now = DateTime.Now;
+                        bool testing = false;
+                        if (now < exam.start_date)
+                        {
+                            <span>未开始</span>
+                        }
+                        else if (now > exam.end_date)
+                        {
+                            <span>已结束</span>
+                        }
+                        else
+                        {
+                            <span>正在进行</span>
+                            testing = true;
+                        }
+                    }
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    @if (testing)
+                    {
+                        <a class="btn btn-sm btn-primary es-exam-list-enter" href="/Exam/Attend/@exam.eid">进入考试</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-primary es-exam-list-enter disabled">进入考试</a>
+                    }
+                </div>
+            </div>
+        </li>
+    }
+</ul>

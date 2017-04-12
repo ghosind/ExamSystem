@@ -1,0 +1,111 @@
+﻿@{
+    List<GroupMember> members = ViewBag.members;
+    GroupMember memberInfo = ViewBag.memberInfo;
+    string[] ranks = { "普通成员", "管理员", "创建者" };
+    ViewBag.Title = "成员列表";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")
+    @Html.Partial("_added_groups")  
+}
+<ul class="list-group">
+    @if (memberInfo.rank >= (int)MemberRank.ADMINISTRATOR)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2">UID</div>
+                <div class="col-md-6">用户名</div>
+                <div class="col-md-2">等级</div>
+                <div class="col-md-2">操作</div>
+            </div>
+        </li>
+        foreach (var member in members)
+        {
+            <li class="list-group-item">
+                <div class="row" id="u_@member.uid">
+                    <div class="col-md-2">@member.uid</div>
+                    <div class="col-md-6">@member.User.name</div>
+                    <div class="col-md-2 rank">@ranks[member.rank]</div>
+                    <span class="rank" style="display: none">@member.rank</span>
+                    <div class="col-md-2">
+                        <button class="btn btn-sm btn-primary" onclick="edit_member(@member.uid)"><span class="glyphicon glyphicon-edit"></span></button>
+                        <button class="btn btn-sm btn-primary btn-danger" onclick="delete_member(@member.uid)"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </div>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2">UID</div>
+                <div class="col-md-6">用户名</div>
+                <div class="col-md-4">等级</div>
+            </div>
+        </li>
+        foreach (var member in members)
+        {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-2">@member.uid</div>
+                    <div class="col-md-6">@member.User.name</div>
+                    <div class="col-md-4">@ranks[member.rank]</div>
+                </div>
+            </li>
+        }
+    }
+</ul>
+@if (memberInfo.rank >= (int)MemberRank.ADMINISTRATOR)
+{
+    <div class="modal fade edit-member" role="dialog" tabindex="-1" aria-labelledby="ediymember" style="display: none;">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="editmember">成员编辑</h4>
+                </div>
+                <div class="modal-body">
+                    <span id="uid" style="display:none"></span>
+                    <select class="form-control" id="rank">
+                        @for (int i = 0; i <= (int) MemberRank.CREATOR; i++)
+                        {
+                            <option value="@i">@ranks[i]</option>
+                        }
+                    </select>
+                    <button class="btn btn-sm btn-primary" onclick="save_change()">确定</button>
+                    <span class="es-warning" id="warning">保存失败</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function edit_member(id) {
+            var rank = $('#u_' + id + ' > .rank').text();
+            $("option[value=" + rank + "]").attr("selected", true);
+            $('#uid').text(id);
+            $('.edit-member').modal('show');
+        }
+
+        function save_change() {
+            var rank = $('#rank').val();
+            var id = $('#uid').text();
+            $.ajax({
+                type: "POST",
+                url: "/Group/SubmitChange",
+                data: "uid=" + id + "&rank=" + rank + "&gid=" + @memberInfo.gid,
+                success: function(data) {
+                    if (data === true) {
+                        $('#u_' + id + ' > .rank').text($('#rank option:selected').text());
+                        $('.edit-member').modal('hide');
+                    } else {
+                        $('#warning').fadeIn();
+                    }
+                }
+            });
+        }
+    </script>
+}

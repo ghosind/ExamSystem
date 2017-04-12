@@ -1,0 +1,76 @@
+﻿@{
+    Group group = ViewBag.group;
+    List<GroupMember> members = ViewBag.members;
+    string[] ranks = { "普通成员", "管理员", "创建者" };
+    ViewBag.Title = "群组信息";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_detail_sidebar")
+    @Html.Partial("_added_groups")  
+}
+<div class="es-profile">
+    <div class="row">
+        <div class="col-md-2">
+            群组名
+        </div>
+        <div class="col-md-10">
+            @group.group_name
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            群组ID
+        </div>
+        <div class="col-md-4">
+            @group.gid
+        </div>
+        <div class="col-md-2">
+            群组拥有者
+        </div>
+        <div class="col-md-4">
+            <a href="/User/Detail/@group.owner_uid">@(UserView.GetUserById((int) group.owner_uid).name)</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            允许自由加入：
+        </div>
+        <div class="col-md-4">
+            @(group.allow_join ? "是" : "否")
+        </div>
+        <div class="col-md-2">
+            允许自由加入：
+        </div>
+        <div class="col-md-4">
+            @(group.allow_quit ? "是" : "否")
+        </div>
+    </div>
+</div>
+<hr />
+<ul class="list-group" style="margin: 10px 0;">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-4">成员列表</div>
+            <div class="col-md-6"></div>
+            <div class="col-md-2 es-list-more"><a href="/Group/Members/@group.gid">更多</a></div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-2">UID</div>
+            <div class="col-md-6">用户名</div>
+            <div class="col-md-4">等级</div>
+        </div>
+    </li>
+    @foreach (var member in members)
+    {
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-2">@member.uid</div>
+                <div class="col-md-6">@UserView.GetUserById((int) member.uid).name</div>
+                <div class="col-md-4">@ranks[member.rank]</div>
+            </div>
+        </li>
+    }
+</ul>

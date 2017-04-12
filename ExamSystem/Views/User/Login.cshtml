@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "登录";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+@section sidebar {
+    @Html.Partial("_not_login_sidebar")
+}
+<form id="login" class="es-form">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <label for="username">用户名</label>
+        </div>
+        <div class="col-md-4">
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <label for="password">密码</label>
+        </div>
+        <div class="col-md-4">
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <input type="checkbox" name="remember"> 7天内免登录
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <span class="es-warning">用户名或密码错误</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        </div>
+    </div>
+</form>
+<script>
+    $('#login').submit(function (event) {
+        $.ajax({
+            type: "POST",
+            url: "/User/LoginWithJson",
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data === true) {
+                    var url = document.referrer;
+                    if (url == "") {
+                        window.location.href = "/Index";
+                    } else {
+                        window.location.href = document.referrer;
+                    }
+                } else {
+                    $('.es-warning').fadeIn();
+                }
+            }
+        })
+        event.preventDefault();
+    });
+</script>

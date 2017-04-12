@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="首页" controller="Index" action="Index">
+    <mvcSiteMapNode title="新闻" controller="News" action="Index" preservedRouteParameters="id">
+      <mvcSiteMapNode title="内容" controller="News" action="Detail" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="发布" controller="News" action="New"/>
+      <mvcSiteMapNode title="编辑" controller="News" action="Edit" preservedRouteParameters="id" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="用户" controller="User" action="Profile">
+      <mvcSiteMapNode title="注册" controller="User" action="Register"/>
+      <mvcSiteMapNode title="登录" controller="User" action="Login"/>
+      <mvcSiteMapNode title="忘记密码" controller="User" action="ForgetPassword"/>
+      <mvcSiteMapNode title="个人资料" controller="User" action="Profile" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="编辑" controller="User" action="Edit" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="设置" controller="User" action="Setting"/>
+      <mvcSiteMapNode title="恢复账户" controller="User" action="Recover"/>
+      <mvcSiteMapNode title="我的成绩" controller="User" action="Result"/>
+      <mvcSiteMapNode title="我的考试" controller="User" action="Exams"/>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="消息" controller="Message" action="Index">
+      <mvcSiteMapNode title="收件箱" controller="Message" action="Index" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="发件箱" controller="Message" action="SendBox" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="消息详细" controller="Message" action="Detail" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="新消息" controller="Message" action="Index" preservedRouteParameters="id" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="考试" controller="Exam" action="Index">
+      <mvcSiteMapNode title="考试详细" controller="Exam" action="Detail" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="我的考试" controller="Exam" action="MyExams" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="新建考试" controller="Exam" action="New" />
+      <mvcSiteMapNode title="考试" controller="Exam" action="Attend" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="成绩列表" controller="Exam" action="Result" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="需阅卷列表" controller="Exam" action="ReviewList" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="阅卷" controller="Exam" action="Review" preservedRouteParameters="id" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="群组" controller="Group" action="Index">
+      <mvcSiteMapNode title="群组列表" controller="Group" action="Index" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="新建群组" controller="Group" action="Create" />
+      <mvcSiteMapNode title="群组详细" controller="Group" action="Detail" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="成员列表" controller="Group" action="Members" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="添加成员" controller="Group" action="AddMember" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="考试列表" controller="Group" action="Exams" preservedRouteParameters="id" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="搜索" controller="Search" action="Index">
+      <mvcSiteMapNode title="新闻" controller="Search" action="News" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="考试" controller="Search" action="Exams" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="群组" controller="Search" action="Groups" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="用户" controller="Search" action="Users" preservedRouteParameters="id" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="管理" controller="Manage" action="Index">
+      <mvcSiteMapNode title="用户管理" controller="Manage" action="Index" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="学科管理" controller="Manage" action="Subject" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="添加学科" controller="Manage" action="AddSubject" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="章节管理" controller="Manage" action="Section" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="添加章节" controller="Manage" action="AddSection" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="题库管理" controller="Manage" action="Questions" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="添加题库" controller="Manage" action="AddQuestion" preservedRouteParameters="id" />
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+
+</mvcSiteMap>
