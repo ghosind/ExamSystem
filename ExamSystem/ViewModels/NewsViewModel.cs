@@ -1,9 +1,7 @@
-﻿using ExamSystem.Models;
-using log4net;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
+using ExamSystem.Models;
+using log4net;
 
 namespace ExamSystem.ViewModels
 {
