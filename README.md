@@ -1,35 +1,31 @@
 # ExamSystem
 
-A simple online examination system.
+一个基于ASP.Net MVC开发的简单的考试管理系统。本项目已不再继续开发与维护，但欢迎提PR完善本项目，已知的问题与改进方向在Todo中提及。
 
-The project was no longer in development, however, pull requests is still welcome.
-
-本项目已不再继续开发与维护，但欢迎提PR完善本项目，已知的问题与改进方向在Todo中提及。
-
-## Environment
+## 环境要求
 
 - Visual Studio 2015
 - SQL Server 2008 R2
 
+## 项目特点
+
+- 基于Bootstrap的UI设计
+- 用户、群组管理功能
+- 实现命卷、答题、阅卷功能
+- 站内信、公告系统
+
 ## Todos
 
-- Fix Null Pointer Exceptions.
-- Add docker supports.
-- Add i18n supports.
-- Add more databases supports.
-- Upgrade to .NET Core.
-- ...
-
-### 中文Todos
-
+- 响应式设计
+- 前后端分离
 - 修复部分页面出现的空指针异常
+- 修复错误的逻辑
 - 增加docker支持
 - 增加多语言支持
 - 支持对更多种类数据库的支持
 - 升级至.Net Core
 - ...
 
-## License
+## 开源许可
 
-The repo was published under MIT license.
-
+本项目使用MIT开源许可。
